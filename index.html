@@ -3,25 +3,37 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ditadura do Chile — Século XX</title>
+  <title>Ditadura do Chile — Apresentação Interativa</title>
   <style>
     :root{
-      --bg:#1d2a35; --card:#243444; --accent:#b32626; --text:#f1f1f1; --muted:#c4c4c4;
-      font-family:'Segoe UI', Arial, sans-serif;
+      --bg:#101820; --card:#162636; --accent:#e63946; --accent2:#f1faee; --text:#f8f9fa; --muted:#c8d3e0;
+      font-family:'Poppins',sans-serif;
     }
-    body{margin:0;background:var(--bg);color:var(--text);height:100vh;display:flex;align-items:center;justify-content:center}
-    .stage{width:95%;max-width:1100px;height:90vh;background:var(--card);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.6);position:relative;overflow:hidden;padding:50px;box-sizing:border-box;}
-    .slide{position:absolute;inset:0;opacity:0;transform:translateX(100%);transition:transform 0.6s ease,opacity 0.6s ease;padding:50px;overflow-y:auto;}
-    .slide.active{opacity:1;transform:translateX(0)}
-    h1{margin-top:0;font-size:36px;color:var(--accent)}
-    h2{color:var(--muted);margin-bottom:20px}
-    p{font-size:18px;line-height:1.6;text-align:justify}
-    ul{font-size:18px;line-height:1.6}
-    li{margin-bottom:10px}
-    footer{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px}
-    button{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-weight:bold}
-    button:hover{background:#8e1f1f}
-    .pager{position:absolute;bottom:25px;right:40px;font-size:14px;color:var(--muted)}
+    body{margin:0;background:radial-gradient(circle at top left, #1a2a3a, var(--bg));color:var(--text);overflow:hidden;}
+    .stage{width:100%;height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+    .slide{position:absolute;inset:0;padding:60px 80px;box-sizing:border-box;opacity:0;transform:translateX(100%);transition:opacity 0.8s ease, transform 0.8s ease;display:flex;flex-direction:column;gap:20px;background:linear-gradient(135deg, rgba(22,38,54,0.95), rgba(10,20,30,0.95));backdrop-filter:blur(6px);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.5);margin:40px;}
+    .slide.active{opacity:1;transform:translateX(0);}
+    h1{font-size:38px;margin:0;color:var(--accent2);text-shadow:0 0 10px rgba(255,255,255,0.3)}
+    h2{font-size:22px;margin:0;color:var(--accent)}
+    p,ul{font-size:18px;line-height:1.6;color:var(--muted);text-align:justify;}
+    ul{list-style-type:'➤ ';padding-left:20px}
+    li{margin-bottom:8px}
+
+    .curiosidade{color:var(--accent);font-weight:600;font-size:17px;margin-top:20px;border-left:4px solid var(--accent);padding-left:10px;}
+
+    footer{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);display:flex;gap:12px;}
+    button{background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:16px;font-weight:600;box-shadow:0 0 10px rgba(230,57,70,0.5);transition:background 0.3s ease,transform 0.2s ease;}
+    button:hover{background:#b02a37;transform:scale(1.05)}
+    .pager{position:absolute;bottom:30px;right:40px;font-size:15px;color:var(--muted)}
+
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    @media (max-width:900px){
+      .slide{padding:30px;margin:20px;}
+      h1{font-size:28px;}
+      p,ul{font-size:16px;}
+      button{font-size:14px;padding:8px 18px;}
+    }
   </style>
 </head>
 <body>
@@ -29,76 +41,81 @@
 
     <!-- Slide 1 -->
     <section class="slide active" data-index="1">
-      <h1>Ditadura do Chile (1973–1990)</h1>
-      <h2>Contexto e introdução</h2>
-      <p>Durante o século XX, o Chile viveu um dos períodos mais marcantes de sua história: a ditadura militar liderada por Augusto Pinochet. O golpe militar de 1973 interrompeu um processo democrático e mergulhou o país em quase duas décadas de autoritarismo, censura e violações de direitos humanos. Essa fase foi, ao mesmo tempo, um marco político e social, moldando a economia, a cultura e a identidade chilena contemporânea.</p>
-      <p>O contexto prévio ao golpe envolvia forte polarização política, crise econômica e tensão social. O governo socialista de Salvador Allende enfrentava resistência da elite e de setores militares, enquanto contava com apoio popular. Essa divisão culminou na ruptura institucional de 11 de setembro de 1973.</p>
+      <h1>Ditadura Militar Chilena (1973–1990)</h1>
+      <h2>Introdução e contexto</h2>
+      <p>O Chile viveu um dos períodos mais marcantes de sua história moderna: a ditadura de <span class="highlight">Augusto Pinochet</span>. O golpe de Estado de 11 de setembro de 1973 derrubou o presidente eleito <span class="highlight">Salvador Allende</span>, instaurando quase 17 anos de governo autoritário. Esse período mudou profundamente a política, a economia e a sociedade chilena.</p>
+      <p>O clima de instabilidade política, a polarização ideológica e a pressão internacional da <span class="highlight">Guerra Fria</span> criaram o cenário ideal para a tomada de poder pelos militares.</p>
+      <p class="curiosidade">Curiosidade: O golpe chileno ocorreu exatamente no mesmo dia (11 de setembro) que os ataques às Torres Gêmeas em 2001, coincidência que marcou a história.</p>
     </section>
 
     <!-- Slide 2 -->
     <section class="slide" data-index="2">
-      <h1>1. O Golpe de Estado de 1973</h1>
-      <h2>Queda de Salvador Allende</h2>
+      <h1>1. O Golpe de 1973</h1>
+      <h2>Da democracia ao autoritarismo</h2>
       <ul>
-        <li>Em 11 de setembro de 1973, as Forças Armadas chilenas, lideradas por Augusto Pinochet, depuseram o presidente democraticamente eleito Salvador Allende.</li>
-        <li>O Palácio de La Moneda, sede do governo, foi bombardeado. Allende se recusou a renunciar e morreu durante o ataque, símbolo de resistência.</li>
-        <li>O golpe contou com apoio dos Estados Unidos, que temiam o avanço do socialismo na América Latina em plena Guerra Fria.</li>
-        <li>Após o golpe, foi instaurada uma Junta Militar, dissolvido o Congresso e suspensa a Constituição de 1925.</li>
+        <li>Em 11 de setembro de 1973, as <span class="highlight">Forças Armadas</span> derrubaram o governo de Salvador Allende.</li>
+        <li>O Palácio de La Moneda foi bombardeado; Allende se suicidou durante o ataque.</li>
+        <li>O golpe teve apoio dos <span class="highlight">Estados Unidos</span>, preocupados com o avanço do socialismo.</li>
+        <li>O Congresso foi fechado e a Constituição suspensa. O país mergulhou em um regime militar.</li>
       </ul>
+      <p class="curiosidade">Curiosidade: O som dos aviões que bombardearam o Palácio de La Moneda foi transmitido ao vivo pelo rádio em todo o Chile.</p>
     </section>
 
     <!-- Slide 3 -->
     <section class="slide" data-index="3">
-      <h1>2. O Regime Militar de Pinochet</h1>
-      <h2>Controle e autoritarismo</h2>
+      <h1>2. O Governo de Pinochet</h1>
+      <h2>O novo regime</h2>
       <ul>
-        <li>Pinochet assumiu o poder e consolidou um governo autoritário, centralizando as decisões no comando militar.</li>
-        <li>Os partidos políticos foram proibidos e os sindicatos dissolvidos, enquanto a censura controlava jornais, rádios e a televisão.</li>
-        <li>O regime se justificava como uma “reconstrução nacional” e combate ao comunismo, mas instaurou um sistema de vigilância e medo.</li>
-        <li>A Constituição de 1980 deu aparência legal ao governo, garantindo a permanência de Pinochet no poder.</li>
+        <li>Pinochet assumiu como <span class="highlight">chefe supremo da nação</span>, concentrando todo o poder político e militar.</li>
+        <li>Os partidos políticos foram proibidos e a censura tornou-se rotina.</li>
+        <li>O regime usava o medo como instrumento de controle social, eliminando opositores.</li>
+        <li>A Constituição de 1980 formalizou o poder de Pinochet e estabeleceu bases do Estado autoritário.</li>
       </ul>
+      <p class="curiosidade">Curiosidade: Pinochet permaneceu como comandante do Exército mesmo após deixar a presidência em 1990.</p>
     </section>
 
     <!-- Slide 4 -->
     <section class="slide" data-index="4">
-      <h1>3. Repressão e Violação dos Direitos Humanos</h1>
-      <h2>A face mais sombria da ditadura</h2>
+      <h1>3. Repressão e Violência</h1>
+      <h2>Os anos de dor e resistência</h2>
       <ul>
-        <li>Milhares de pessoas foram presas, torturadas, executadas ou desapareceram durante o regime.</li>
-        <li>Centros de detenção, como Villa Grimaldi e Colônia Dignidad, ficaram conhecidos por práticas de tortura.</li>
-        <li>Organizações internacionais, como a Anistia Internacional e a ONU, denunciaram os abusos sistemáticos.</li>
-        <li>Até hoje, famílias ainda buscam justiça e memória para as vítimas do regime.</li>
+        <li>Mais de <span class="highlight">3.000 pessoas foram mortas ou desapareceram</span> durante o regime.</li>
+        <li>Milhares foram presos, torturados ou forçados ao exílio.</li>
+        <li>Centros como <span class="highlight">Villa Grimaldi</span> e <span class="highlight">Colônia Dignidad</span> tornaram-se símbolos do terror.</li>
+        <li>Apesar da repressão, surgiram movimentos de resistência e redes clandestinas de informação.</li>
       </ul>
+      <p class="curiosidade">Curiosidade: A Colônia Dignidad, usada como centro de tortura, foi fundada por um ex-nazista alemão chamado Paul Schäfer.</p>
     </section>
 
     <!-- Slide 5 -->
     <section class="slide" data-index="5">
-      <h1>4. Reformas Econômicas e Desigualdade</h1>
-      <h2>O “milagre chileno” e suas contradições</h2>
+      <h1>4. A Economia sob o Regime</h1>
+      <h2>O chamado “milagre chileno”</h2>
       <ul>
-        <li>Pinochet implementou políticas neoliberais orientadas pelos “Chicago Boys”, economistas chilenos formados nos EUA.</li>
-        <li>Privatizações em massa, abertura comercial e cortes nos gastos públicos marcaram o período.</li>
-        <li>Apesar do crescimento econômico, a desigualdade social aumentou e o desemprego atingiu milhões.</li>
-        <li>O modelo econômico influenciou políticas liberais na América Latina nas décadas seguintes.</li>
+        <li>Pinochet aplicou políticas <span class="highlight">neoliberais</span> com ajuda dos “Chicago Boys”.</li>
+        <li>Privatizações e cortes sociais transformaram a economia, mas ampliaram a desigualdade.</li>
+        <li>O desemprego aumentou, e o acesso à educação e saúde tornou-se mais limitado.</li>
+        <li>Apesar disso, o Chile se tornou referência econômica na América do Sul nos anos 1980.</li>
       </ul>
+      <p class="curiosidade">Curiosidade: A previdência privada criada na ditadura chilena foi o modelo que inspirou reformas em outros países da América Latina.</p>
     </section>
 
     <!-- Slide 6 -->
     <section class="slide" data-index="6">
-      <h1>5. Resistência e Caminho para a Democracia</h1>
-      <h2>O fim do regime e o legado histórico</h2>
+      <h1>5. Fim da Ditadura e Retorno à Democracia</h1>
+      <h2>O legado e a reconstrução</h2>
       <ul>
-        <li>Movimentos sociais, grupos de direitos humanos, estudantes e a Igreja Católica desafiaram a ditadura.</li>
-        <li>O plebiscito de 1988 marcou a derrota política de Pinochet, que foi obrigado a aceitar o retorno democrático.</li>
-        <li>Em 1990, Patricio Aylwin assumiu a presidência, encerrando formalmente o regime militar.</li>
-        <li>O Chile iniciou um processo de reconciliação nacional, com investigações e memoriais às vítimas.</li>
+        <li>O <span class="highlight">plebiscito de 1988</span> marcou a derrota política de Pinochet.</li>
+        <li>Em 1990, o Chile voltou à democracia com a eleição de <span class="highlight">Patricio Aylwin</span>.</li>
+        <li>O país iniciou um processo de memória e justiça pelas vítimas da ditadura.</li>
+        <li>Até hoje, o período é lembrado como um alerta sobre a importância da liberdade e da democracia.</li>
       </ul>
-      <p>Até hoje, o país enfrenta o desafio de equilibrar justiça e perdão, lembrando as lições desse período para proteger a democracia e os direitos humanos.</p>
+      <p class="curiosidade">Curiosidade: Pinochet foi o primeiro ex-ditador da América do Sul a ser preso fora do próprio país, em 1998, no Reino Unido.</p>
     </section>
 
     <footer>
-      <button id="prev">◀ Anterior</button>
-      <button id="next">Próximo ▶</button>
+      <button id="prev">◀ Voltar</button>
+      <button id="next">Avançar ▶</button>
     </footer>
     <div class="pager" id="pager">Slide 1 / 6</div>
   </div>
@@ -109,7 +126,7 @@
     const pager = document.getElementById('pager');
 
     function update(){
-      slides.forEach((s,i)=>{s.classList.remove('active');if(i===current)s.classList.add('active');});
+      slides.forEach((s,i)=>{s.classList.remove('active');if(i===current){s.classList.add('active');}});
       pager.textContent = `Slide ${current+1} / ${slides.length}`;
     }
 
@@ -125,3 +142,4 @@
   </script>
 </body>
 </html>
+
