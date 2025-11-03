@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ditadura do Chile — Século XX</title>
+  <style>
+    :root{
+      --bg:#1d2a35; --card:#243444; --accent:#b32626; --text:#f1f1f1; --muted:#c4c4c4;
+      font-family:'Segoe UI', Arial, sans-serif;
+    }
+    body{margin:0;background:var(--bg);color:var(--text);height:100vh;display:flex;align-items:center;justify-content:center}
+    .stage{width:95%;max-width:1100px;height:90vh;background:var(--card);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.6);position:relative;overflow:hidden;padding:50px;box-sizing:border-box;}
+    .slide{position:absolute;inset:0;opacity:0;transform:translateX(100%);transition:transform 0.6s ease,opacity 0.6s ease;padding:50px;overflow-y:auto;}
+    .slide.active{opacity:1;transform:translateX(0)}
+    h1{margin-top:0;font-size:36px;color:var(--accent)}
+    h2{color:var(--muted);margin-bottom:20px}
+    p{font-size:18px;line-height:1.6;text-align:justify}
+    ul{font-size:18px;line-height:1.6}
+    li{margin-bottom:10px}
+    footer{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px}
+    button{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-weight:bold}
+    button:hover{background:#8e1f1f}
+    .pager{position:absolute;bottom:25px;right:40px;font-size:14px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="stage">
+
+    <!-- Slide 1 -->
+    <section class="slide active" data-index="1">
+      <h1>Ditadura do Chile (1973–1990)</h1>
+      <h2>Contexto e introdução</h2>
+      <p>Durante o século XX, o Chile viveu um dos períodos mais marcantes de sua história: a ditadura militar liderada por Augusto Pinochet. O golpe militar de 1973 interrompeu um processo democrático e mergulhou o país em quase duas décadas de autoritarismo, censura e violações de direitos humanos. Essa fase foi, ao mesmo tempo, um marco político e social, moldando a economia, a cultura e a identidade chilena contemporânea.</p>
+      <p>O contexto prévio ao golpe envolvia forte polarização política, crise econômica e tensão social. O governo socialista de Salvador Allende enfrentava resistência da elite e de setores militares, enquanto contava com apoio popular. Essa divisão culminou na ruptura institucional de 11 de setembro de 1973.</p>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide" data-index="2">
+      <h1>1. O Golpe de Estado de 1973</h1>
+      <h2>Queda de Salvador Allende</h2>
+      <ul>
+        <li>Em 11 de setembro de 1973, as Forças Armadas chilenas, lideradas por Augusto Pinochet, depuseram o presidente democraticamente eleito Salvador Allende.</li>
+        <li>O Palácio de La Moneda, sede do governo, foi bombardeado. Allende se recusou a renunciar e morreu durante o ataque, símbolo de resistência.</li>
+        <li>O golpe contou com apoio dos Estados Unidos, que temiam o avanço do socialismo na América Latina em plena Guerra Fria.</li>
+        <li>Após o golpe, foi instaurada uma Junta Militar, dissolvido o Congresso e suspensa a Constituição de 1925.</li>
+      </ul>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide" data-index="3">
+      <h1>2. O Regime Militar de Pinochet</h1>
+      <h2>Controle e autoritarismo</h2>
+      <ul>
+        <li>Pinochet assumiu o poder e consolidou um governo autoritário, centralizando as decisões no comando militar.</li>
+        <li>Os partidos políticos foram proibidos e os sindicatos dissolvidos, enquanto a censura controlava jornais, rádios e a televisão.</li>
+        <li>O regime se justificava como uma “reconstrução nacional” e combate ao comunismo, mas instaurou um sistema de vigilância e medo.</li>
+        <li>A Constituição de 1980 deu aparência legal ao governo, garantindo a permanência de Pinochet no poder.</li>
+      </ul>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide" data-index="4">
+      <h1>3. Repressão e Violação dos Direitos Humanos</h1>
+      <h2>A face mais sombria da ditadura</h2>
+      <ul>
+        <li>Milhares de pessoas foram presas, torturadas, executadas ou desapareceram durante o regime.</li>
+        <li>Centros de detenção, como Villa Grimaldi e Colônia Dignidad, ficaram conhecidos por práticas de tortura.</li>
+        <li>Organizações internacionais, como a Anistia Internacional e a ONU, denunciaram os abusos sistemáticos.</li>
+        <li>Até hoje, famílias ainda buscam justiça e memória para as vítimas do regime.</li>
+      </ul>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide" data-index="5">
+      <h1>4. Reformas Econômicas e Desigualdade</h1>
+      <h2>O “milagre chileno” e suas contradições</h2>
+      <ul>
+        <li>Pinochet implementou políticas neoliberais orientadas pelos “Chicago Boys”, economistas chilenos formados nos EUA.</li>
+        <li>Privatizações em massa, abertura comercial e cortes nos gastos públicos marcaram o período.</li>
+        <li>Apesar do crescimento econômico, a desigualdade social aumentou e o desemprego atingiu milhões.</li>
+        <li>O modelo econômico influenciou políticas liberais na América Latina nas décadas seguintes.</li>
+      </ul>
+    </section>
+
+    <!-- Slide 6 -->
+    <section class="slide" data-index="6">
+      <h1>5. Resistência e Caminho para a Democracia</h1>
+      <h2>O fim do regime e o legado histórico</h2>
+      <ul>
+        <li>Movimentos sociais, grupos de direitos humanos, estudantes e a Igreja Católica desafiaram a ditadura.</li>
+        <li>O plebiscito de 1988 marcou a derrota política de Pinochet, que foi obrigado a aceitar o retorno democrático.</li>
+        <li>Em 1990, Patricio Aylwin assumiu a presidência, encerrando formalmente o regime militar.</li>
+        <li>O Chile iniciou um processo de reconciliação nacional, com investigações e memoriais às vítimas.</li>
+      </ul>
+      <p>Até hoje, o país enfrenta o desafio de equilibrar justiça e perdão, lembrando as lições desse período para proteger a democracia e os direitos humanos.</p>
+    </section>
+
+    <footer>
+      <button id="prev">◀ Anterior</button>
+      <button id="next">Próximo ▶</button>
+    </footer>
+    <div class="pager" id="pager">Slide 1 / 6</div>
+  </div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    let current = 0;
+    const pager = document.getElementById('pager');
+
+    function update(){
+      slides.forEach((s,i)=>{s.classList.remove('active');if(i===current)s.classList.add('active');});
+      pager.textContent = `Slide ${current+1} / ${slides.length}`;
+    }
+
+    document.getElementById('next').onclick=()=>{if(current<slides.length-1){current++;update();}};
+    document.getElementById('prev').onclick=()=>{if(current>0){current--;update();}};
+
+    document.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight' || e.key===' '){if(current<slides.length-1){current++;update();}}
+      if(e.key==='ArrowLeft'){if(current>0){current--;update();}}
+    });
+
+    update();
+  </script>
+</body>
+</html>
