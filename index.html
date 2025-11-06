@@ -4,273 +4,555 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ditadura do Chile — Apresentação Interativa</title>
+  <meta name="description" content="Apresentação interativa sobre a Ditadura Militar Chilena (1973–1990).">
   <style>
     :root{
-      --bg:#101820; --card:#162636; --accent:#e63946; --accent2:#f1faee; --text:#f8f9fa; --muted:#c8d3e0;
-      font-family:'Poppins',sans-serif;
-    }
-
-    body{
-      margin:0;
-      background:radial-gradient(circle at top left, #1a2a3a, var(--bg));
-      color:var(--text);
+      --bg-dark:#04060a;
+      --blue-dark:#071224;
+      --blue-mid:#0f3150;
+      --accent:#00aaff;
+      --accent2:#bfe8ff;
+      --text:#eef6ff;
+      --muted:#c2d6e6;
+      --curiosity:#ff3b3b;
+      --ease: cubic-bezier(.2,.9,.3,1);
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       -webkit-font-smoothing:antialiased;
-      overflow:hidden;
+      -moz-osx-font-smoothing:grayscale;
     }
 
-    .stage{
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:var(--bg-dark);color:var(--text);overflow:hidden}
+
+    /* Intro overlay */
+    .intro {
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg, rgba(2,6,12,0.85), rgba(2,6,12,0.95));
+      z-index:150;
+      flex-direction:column;
+      gap:18px;
+      padding:24px;
+    }
+    .intro .logo {
+      font-size:22px;
+      letter-spacing:0.6px;
+      color:var(--accent2);
+      text-shadow:0 6px 30px rgba(0,170,255,0.08);
+      transform: translateY(-6px);
+      opacity:0;
+      animation: introText 800ms var(--ease) forwards;
+    }
+    .intro h1{
+      font-size:28px;
+      color:var(--accent);
+      line-height:1.05;
+      text-align:center;
+      opacity:0;
+      transform:translateY(10px) scale(0.98);
+      animation: introTitle 1000ms 200ms var(--ease) forwards;
+    }
+    .intro p{
+      max-width:760px;
+      text-align:center;
+      color:var(--muted);
+      font-size:15px;
+      opacity:0;
+      transform:translateY(10px);
+      animation: introSub 1000ms 350ms var(--ease) forwards;
+    }
+    .intro button{
+      margin-top:6px;
+      padding:12px 22px;
+      border-radius:10px;
+      border:0;
+      font-weight:700;
+      background:linear-gradient(90deg,var(--accent) 0%, var(--blue-mid) 100%);
+      color:white;
+      cursor:pointer;
+      box-shadow:0 10px 30px rgba(0,170,255,0.12);
+      transform:translateY(12px);
+      opacity:0;
+      animation: introBtn 900ms 500ms var(--ease) forwards;
+    }
+
+    @keyframes introText {
+      to { opacity:1; transform: translateY(0); }
+    }
+    @keyframes introTitle {
+      to { opacity:1; transform: translateY(0) scale(1); }
+    }
+    @keyframes introSub {
+      to { opacity:1; transform: translateY(0); }
+    }
+    @keyframes introBtn {
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* Stage / slider */
+    .stage {
+      position:relative;
       width:100%;
       height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      position:relative;
       overflow:hidden;
-      -webkit-overflow-scrolling:touch;
+      background: linear-gradient(180deg, rgba(1,10,20,0.02), rgba(2,8,15,0.02));
     }
 
-    .slide{
+    .viewport {
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      position:relative;
+      touch-action: pan-y;
+    }
+
+    .track {
+      display:flex;
+      height:100%;
+      transition: transform 700ms var(--ease);
+      will-change: transform;
+    }
+
+    .slide {
+      position:relative;
+      min-width:100%;
+      height:100%;
+      padding:48px;
+      box-sizing:border-box;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      /* content card styles */
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Each slide has duplicated background through a pseudo-element to allow smooth soft blur */
+    .slide::before{
+      content:"";
       position:absolute;
       inset:0;
-      padding:60px 80px;
-      box-sizing:border-box;
-      opacity:0;
-      transform:translateX(100%);
-      -webkit-transform:translateX(100%);
-      transition:opacity 0.8s ease, transform 0.8s ease;
-      -webkit-transition:opacity 0.8s ease, -webkit-transform 0.8s ease;
-      display:flex;
-      flex-direction:column;
-      gap:20px;
-      background:linear-gradient(135deg, rgba(22,38,54,0.95), rgba(10,20,30,0.95));
-      backdrop-filter:blur(6px);
-      -webkit-backdrop-filter:blur(6px);
-      border-radius:16px;
-      box-shadow:0 8px 40px rgba(0,0,0,0.5);
-      margin:40px;
+      background-image: var(--bg-url, none);
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      filter: blur(8px) saturate(95%);
+      transform:scale(1.03); /* subtle zoom via scaling */
+      opacity:0.88; /* soft blur (user requested blur suave) */
       z-index:0;
+      transition: filter 450ms ease, opacity 450ms ease;
     }
-
-    .slide.active{
-      opacity:1;
-      transform:translateX(0);
-      -webkit-transform:translateX(0);
-    }
-
-    h1{
-      font-size:38px;
-      margin:0;
-      color:var(--accent2);
-      text-shadow:0 0 10px rgba(255,255,255,0.3);
-    }
-
-    h2{
-      font-size:22px;
-      margin:0;
-      color:var(--accent);
-    }
-
-    p,ul{
-      font-size:18px;
-      line-height:1.6;
-      color:var(--muted);
-      text-align:justify;
-    }
-
-    ul{
-      list-style-type:'➤ ';
-      padding-left:20px;
-    }
-
-    li{margin-bottom:8px;}
-
-    .curiosidade{
-      color:var(--accent);
-      font-weight:600;
-      font-size:17px;
-      margin-top:20px;
-      border-left:4px solid var(--accent);
-      padding-left:10px;
-    }
-
-    footer{
+    .slide::after{
+      /* color overlay to harmonize colors (preto / azul escuro / azul claro) */
+      content:"";
       position:absolute;
-      bottom:25px;
+      inset:0;
+      background: linear-gradient(180deg, rgba(5,12,20,0.5), rgba(2,8,18,0.6));
+      z-index:1;
+    }
+
+    /* content card */
+    .card {
+      position:relative;
+      z-index:2;
+      max-width:1100px;
+      width:100%;
+      background: linear-gradient(180deg, rgba(10,18,30,0.55), rgba(6,12,20,0.6));
+      border-radius:18px;
+      padding:40px;
+      box-shadow: 0 18px 50px rgba(2,10,30,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(4px);
+    }
+
+    h1 { font-size:36px; margin:0; color:var(--accent2); text-shadow:0 6px 30px rgba(11,109,180,0.06) }
+    h2 { font-size:20px; margin:8px 0 14px 0; color:var(--accent); }
+    p, ul { font-size:18px; line-height:1.6; color:var(--muted); text-align:justify }
+    ul { padding-left:20px; list-style:'➤ ' }
+    li { margin-bottom:8px }
+
+    .curiosidade {
+      color:var(--curiosity);
+      font-weight:700;
+      font-size:16px;
+      border-left:4px solid var(--curiosity);
+      padding-left:10px;
+      margin-top:16px;
+      background: linear-gradient(90deg, rgba(255,59,59,0.02), transparent);
+    }
+
+    /* navigation controls */
+    .controls {
+      position:absolute;
+      bottom:22px;
       left:50%;
       transform:translateX(-50%);
-      -webkit-transform:translateX(-50%);
       display:flex;
-      gap:12px;
-      z-index:100;
+      gap:10px;
+      z-index:120;
+      align-items:center;
+      justify-content:center;
     }
 
-    button{
-      background:var(--accent);
-      color:#fff;
-      border:none;
-      padding:10px 24px;
-      border-radius:8px;
+    .btn {
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--accent2);
+      padding:10px 14px;
+      border-radius:10px;
       cursor:pointer;
-      font-size:16px;
-      font-weight:600;
-      box-shadow:0 0 10px rgba(230,57,70,0.5);
-      transition:background 0.3s ease,transform 0.2s ease;
-      -webkit-transition:background 0.3s ease,-webkit-transform 0.2s ease;
+      font-weight:700;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
     }
+    .btn:hover{ transform: translateY(-3px); transition: transform 200ms var(--ease) }
 
-    button:hover{
-      background:#b02a37;
-      transform:scale(1.05);
-      -webkit-transform:scale(1.05);
-    }
-
-    .pager{
+    .pager {
       position:absolute;
-      bottom:30px;
-      right:40px;
-      font-size:15px;
+      top:18px;
+      right:22px;
+      z-index:120;
       color:var(--muted);
-      z-index:100;
+      font-weight:600;
+      background: rgba(0,0,0,0.25);
+      padding:8px 10px;
+      border-radius:8px;
+      backdrop-filter: blur(6px);
     }
 
-    @-webkit-keyframes fadeIn{
-      from{opacity:0;-webkit-transform:translateY(20px);transform:translateY(20px);}
-      to{opacity:1;-webkit-transform:translateY(0);transform:translateY(0);}
+    .progress {
+      position:absolute;
+      left:0;
+      bottom:0;
+      height:6px;
+      background: linear-gradient(90deg,var(--accent), var(--accent2));
+      width:0%;
+      z-index:130;
+      transition: width 600ms var(--ease);
     }
 
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(20px);}
-      to{opacity:1;transform:translateY(0);}
-    }
+    /* slide transition visual: slight zoom on active slide */
+    .slide .card{ transform: scale(0.985); transition: transform 700ms var(--ease) }
+    .slide.active .card{ transform: scale(1); }
 
+    /* small screens */
     @media (max-width:900px){
-      .slide{padding:30px;margin:20px;}
-      h1{font-size:28px;}
-      p,ul{font-size:16px;}
-      button{font-size:14px;padding:8px 18px;}
+      .card{ padding:20px; border-radius:14px; margin:0 8px; }
+      h1{font-size:24px}
+      h2{font-size:18px}
+      p,ul{font-size:15px}
+      .intro h1{font-size:22px}
     }
+
+    /* Accessibility focus */
+    button:focus { outline:2px solid rgba(0,170,255,0.18); outline-offset:4px }
   </style>
 </head>
 <body>
-  <div class="stage">
 
-    <!-- Slide 1 -->
-    <section class="slide active" data-index="1">
-      <h1>Ditadura Militar Chilena (1973–1990)</h1>
-      <h2>Introdução e contexto</h2>
-      <p>O Chile viveu um dos períodos mais marcantes de sua história moderna: a ditadura de <span class="highlight">Augusto Pinochet</span>. O golpe de Estado de 11 de setembro de 1973 derrubou o presidente eleito <span class="highlight">Salvador Allende</span>, instaurando quase 17 anos de governo autoritário. Esse período mudou profundamente a política, a economia e a sociedade chilena.</p>
-      <p>O clima de instabilidade política, a polarização ideológica e a pressão internacional da <span class="highlight">Guerra Fria</span> criaram o cenário ideal para a tomada de poder pelos militares.</p>
-      <p class="curiosidade">Curiosidade: O golpe chileno ocorreu exatamente no mesmo dia (11 de setembro) que os ataques às Torres Gêmeas em 2001, coincidência que marcou a história.</p>
-    </section>
-
-    <!-- Slide 2 -->
-    <section class="slide" data-index="2">
-      <h1>1. O Golpe de 1973</h1>
-      <h2>Da democracia ao autoritarismo</h2>
-      <ul>
-        <li>Em 11 de setembro de 1973, as <span class="highlight">Forças Armadas</span> derrubaram o governo de Salvador Allende.</li>
-        <li>O Palácio de La Moneda foi bombardeado; Allende se suicidou durante o ataque.</li>
-        <li>O golpe teve apoio dos <span class="highlight">Estados Unidos</span>, preocupados com o avanço do socialismo.</li>
-        <li>O Congresso foi fechado e a Constituição suspensa. O país mergulhou em um regime militar.</li>
-      </ul>
-      <p class="curiosidade">Curiosidade: O som dos aviões que bombardearam o Palácio de La Moneda foi transmitido ao vivo pelo rádio em todo o Chile.</p>
-    </section>
-
-    <!-- Slide 3 -->
-    <section class="slide" data-index="3">
-      <h1>2. O Governo de Pinochet</h1>
-      <h2>O novo regime</h2>
-      <ul>
-        <li>Pinochet assumiu como <span class="highlight">chefe supremo da nação</span>, concentrando todo o poder político e militar.</li>
-        <li>Os partidos políticos foram proibidos e a censura tornou-se rotina.</li>
-        <li>O regime usava o medo como instrumento de controle social, eliminando opositores.</li>
-        <li>A Constituição de 1980 formalizou o poder de Pinochet e estabeleceu bases do Estado autoritário.</li>
-      </ul>
-      <p class="curiosidade">Curiosidade: Pinochet permaneceu como comandante do Exército mesmo após deixar a presidência em 1990.</p>
-    </section>
-
-    <!-- Slide 4 -->
-    <section class="slide" data-index="4">
-      <h1>3. Repressão e Violência</h1>
-      <h2>Os anos de dor e resistência</h2>
-      <ul>
-        <li>Mais de <span class="highlight">3.000 pessoas foram mortas ou desapareceram</span> durante o regime.</li>
-        <li>Milhares foram presos, torturados ou forçados ao exílio.</li>
-        <li>Centros como <span class="highlight">Villa Grimaldi</span> e <span class="highlight">Colônia Dignidad</span> tornaram-se símbolos do terror.</li>
-        <li>Apesar da repressão, surgiram movimentos de resistência e redes clandestinas de informação.</li>
-      </ul>
-      <p class="curiosidade">Curiosidade: A Colônia Dignidad, usada como centro de tortura, foi fundada por um ex-nazista alemão chamado Paul Schäfer.</p>
-    </section>
-
-    <!-- Slide 5 -->
-    <section class="slide" data-index="5">
-      <h1>4. A Economia sob o Regime</h1>
-      <h2>O chamado “milagre chileno”</h2>
-      <ul>
-        <li>Pinochet aplicou políticas <span class="highlight">neoliberais</span> com ajuda dos “Chicago Boys”.</li>
-        <li>Privatizações e cortes sociais transformaram a economia, mas ampliaram a desigualdade.</li>
-        <li>O desemprego aumentou, e o acesso à educação e saúde tornou-se mais limitado.</li>
-        <li>Apesar disso, o Chile se tornou referência econômica na América do Sul nos anos 1980.</li>
-      </ul>
-      <p class="curiosidade">Curiosidade: A previdência privada criada na ditadura chilena foi o modelo que inspirou reformas em outros países da América Latina.</p>
-    </section>
-
-    <!-- Slide 6 -->
-    <section class="slide" data-index="6">
-      <h1>5. Fim da Ditadura e Retorno à Democracia</h1>
-      <h2>O legado e a reconstrução</h2>
-      <ul>
-        <li>O <span class="highlight">plebiscito de 1988</span> marcou a derrota política de Pinochet.</li>
-        <li>Em 1990, o Chile voltou à democracia com a eleição de <span class="highlight">Patricio Aylwin</span>.</li>
-        <li>O país iniciou um processo de memória e justiça pelas vítimas da ditadura.</li>
-        <li>Até hoje, o período é lembrado como um alerta sobre a importância da liberdade e da democracia.</li>
-      </ul>
-      <p class="curiosidade">Curiosidade: Pinochet foi o primeiro ex-ditador da América do Sul a ser preso fora do próprio país, em 1998, no Reino Unido.</p>
-    </section>
-
-    <footer>
-      <button id="prev">◀ Voltar</button>
-      <button id="next">Avançar ▶</button>
-    </footer>
-    <div class="pager" id="pager">Slide 1 / 6</div>
+  <!-- Intro overlay -->
+  <div class="intro" id="intro">
+    <div class="logo">Ditadura do Chile — Apresentação Interativa</div>
+    <h1>Ditadura do Chile — Apresentação Interativa</h1>
+    <p>Uma apresentação sobre o golpe de 1973, o governo de Augusto Pinochet, a repressão e o retorno à democracia. Use as setas, os botões abaixo ou arraste para navegar pelos slides.</p>
+    <button id="startBtn" aria-label="Iniciar apresentação">Iniciar apresentação</button>
   </div>
 
-  <script>
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    let current = 0;
-    const pager = document.getElementById('pager');
+  <!-- Stage / Slider -->
+  <main class="stage" aria-roledescription="slideshow">
+    <div class="viewport" id="viewport" role="region" aria-label="Slides">
+      <div class="track" id="track">
+        <!-- Slide 1 -->
+        <section class="slide active" data-index="1" style="--bg-url: url('assets/img/chile\ 1.png');" aria-hidden="false">
+          <div class="card" role="article" aria-labelledby="title-1">
+            <h1 id="title-1">Ditadura Militar Chilena (1973–1990)</h1>
+            <h2>Introdução e contexto</h2>
+            <p>O Chile viveu um dos períodos mais marcantes de sua história moderna: a ditadura de <span class="highlight">Augusto Pinochet</span>. O golpe de Estado de 11 de setembro de 1973 derrubou o presidente eleito <span class="highlight">Salvador Allende</span>, instaurando quase 17 anos de governo autoritário. Esse período mudou profundamente a política, a economia e a sociedade chilena.</p>
+            <p>O clima de instabilidade política, a polarização ideológica e a pressão internacional da <span class="highlight">Guerra Fria</span> criaram o cenário ideal para a tomada de poder pelos militares.</p>
+            <p class="curiosidade">Curiosidade: O golpe chileno ocorreu exatamente no mesmo dia (11 de setembro) que os ataques às Torres Gêmeas em 2001, coincidência que marcou a história.</p>
+          </div>
+        </section>
 
-    function update(){
+        <!-- Slide 2 -->
+        <section class="slide" data-index="2" style="--bg-url: url('assets/img/chile\ 2.png');" aria-hidden="true">
+          <div class="card" role="article" aria-labelledby="title-2">
+            <h1 id="title-2">1. O Golpe de 1973</h1>
+            <h2>Da democracia ao autoritarismo</h2>
+            <ul>
+              <li>Em 11 de setembro de 1973, as <span class="highlight">Forças Armadas</span> derrubaram o governo de Salvador Allende.</li>
+              <li>O Palácio de La Moneda foi bombardeado; Allende se suicidou durante o ataque.</li>
+              <li>O golpe teve apoio dos <span class="highlight">Estados Unidos</span>, preocupados com o avanço do socialismo.</li>
+              <li>O Congresso foi fechado e a Constituição suspensa. O país mergulhou em um regime militar.</li>
+            </ul>
+            <p class="curiosidade">Curiosidade: O som dos aviões que bombardearam o Palácio de La Moneda foi transmitido ao vivo pelo rádio em todo o Chile.</p>
+          </div>
+        </section>
+
+        <!-- Slide 3 -->
+        <section class="slide" data-index="3" style="--bg-url: url('assets/img/chile\ 3.png');" aria-hidden="true">
+          <div class="card" role="article" aria-labelledby="title-3">
+            <h1 id="title-3">2. O Governo de Pinochet</h1>
+            <h2>O novo regime</h2>
+            <ul>
+              <li>Pinochet assumiu como <span class="highlight">chefe supremo da nação</span>, concentrando todo o poder político e militar.</li>
+              <li>Os partidos políticos foram proibidos e a censura tornou-se rotina.</li>
+              <li>O regime usava o medo como instrumento de controle social, eliminando opositores.</li>
+              <li>A Constituição de 1980 formalizou o poder de Pinochet e estabeleceu bases do Estado autoritário.</li>
+            </ul>
+            <p class="curiosidade">Curiosidade: Pinochet permaneceu como comandante do Exército mesmo após deixar a presidência em 1990.</p>
+          </div>
+        </section>
+
+        <!-- Slide 4 -->
+        <section class="slide" data-index="4" style="--bg-url: url('assets/img/chile\ 4.png');" aria-hidden="true">
+          <div class="card" role="article" aria-labelledby="title-4">
+            <h1 id="title-4">3. Repressão e Violência</h1>
+            <h2>Os anos de dor e resistência</h2>
+            <ul>
+              <li>Mais de <span class="highlight">3.000 pessoas foram mortas ou desapareceram</span> durante o regime.</li>
+              <li>Milhares foram presos, torturados ou forçados ao exílio.</li>
+              <li>Centros como <span class="highlight">Villa Grimaldi</span> e <span class="highlight">Colônia Dignidad</span> tornaram-se símbolos do terror.</li>
+              <li>Apesar da repressão, surgiram movimentos de resistência e redes clandestinas de informação.</li>
+            </ul>
+            <p class="curiosidade">Curiosidade: A Colônia Dignidad, usada como centro de tortura, foi fundada por um ex-nazista alemão chamado Paul Schäfer.</p>
+          </div>
+        </section>
+
+        <!-- Slide 5 -->
+        <section class="slide" data-index="5" style="--bg-url: url('assets/img/chile\ 5.png');" aria-hidden="true">
+          <div class="card" role="article" aria-labelledby="title-5">
+            <h1 id="title-5">4. A Economia sob o Regime</h1>
+            <h2>O chamado “milagre chileno”</h2>
+            <ul>
+              <li>Pinochet aplicou políticas <span class="highlight">neoliberais</span> com ajuda dos “Chicago Boys”.</li>
+              <li>Privatizações e cortes sociais transformaram a economia, mas ampliaram a desigualdade.</li>
+              <li>O desemprego aumentou, e o acesso à educação e saúde tornou-se mais limitado.</li>
+              <li>Apesar disso, o Chile se tornou referência econômica na América do Sul nos anos 1980.</li>
+            </ul>
+            <p class="curiosidade">Curiosidade: A previdência privada criada na ditadura chilena foi o modelo que inspirou reformas em outros países da América Latina.</p>
+          </div>
+        </section>
+
+        <!-- Slide 6 -->
+        <section class="slide" data-index="6" style="--bg-url: url('assets/img/chile\ 6.png');" aria-hidden="true">
+          <div class="card" role="article" aria-labelledby="title-6">
+            <h1 id="title-6">5. Fim da Ditadura e Retorno à Democracia</h1>
+            <h2>O legado e a reconstrução</h2>
+            <ul>
+              <li>O <span class="highlight">plebiscito de 1988</span> marcou a derrota política de Pinochet.</li>
+              <li>Em 1990, o Chile voltou à democracia com a eleição de <span class="highlight">Patricio Aylwin</span>.</li>
+              <li>O país iniciou um processo de memória e justiça pelas vítimas da ditadura.</li>
+              <li>Até hoje, o período é lembrado como um alerta sobre a importância da liberdade e da democracia.</li>
+            </ul>
+            <p class="curiosidade">Curiosidade: Pinochet foi o primeiro ex-ditador da América do Sul a ser preso fora do próprio país, em 1998, no Reino Unido.</p>
+          </div>
+        </section>
+
+      </div><!-- .track -->
+    </div><!-- .viewport -->
+
+    <!-- controls -->
+    <div class="controls" aria-hidden="false">
+      <button class="btn" id="prev" aria-label="Slide anterior">◀ Voltar</button>
+      <div class="pager" id="pager" aria-live="polite">Slide 1 / 6</div>
+      <button class="btn" id="next" aria-label="Próximo slide">Avançar ▶</button>
+    </div>
+
+    <div class="progress" id="progress" aria-hidden="true"></div>
+  </main>
+
+  <script>
+    // Elements
+    const intro = document.getElementById('intro');
+    const startBtn = document.getElementById('startBtn');
+    const track = document.getElementById('track');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const pager = document.getElementById('pager');
+    const progress = document.getElementById('progress');
+    const viewport = document.getElementById('viewport');
+
+    let current = 0;
+    const total = slides.length;
+
+    // Helper to set aria-hidden and active class
+    function render(){
       slides.forEach((s,i)=>{
-        s.classList.remove('active');
-        if(i===current){ s.classList.add('active'); }
+        if(i === current){
+          s.classList.add('active');
+          s.setAttribute('aria-hidden','false');
+        } else {
+          s.classList.remove('active');
+          s.setAttribute('aria-hidden','true');
+        }
       });
-      pager.textContent = `Slide ${current+1} / ${slides.length}`;
+      // move track
+      track.style.transform = `translateX(-${current * 100}%)`;
+      pager.textContent = `Slide ${current+1} / ${total}`;
+      progress.style.width = `${((current+1)/total) * 100}%`;
     }
 
-    document.getElementById('next').onclick=()=>{ if(current<slides.length-1){ current++; update(); } };
-    document.getElementById('prev').onclick=()=>{ if(current>0){ current--; update(); } };
+    // Navigation functions
+    function goto(n){
+      current = (n + total) % total;
+      render();
+    }
+    function next(){ if(current < total-1) { current++; render(); } }
+    function prev(){ if(current > 0) { current--; render(); } }
 
-    document.addEventListener('keydown',e=>{
-      if(e.key==='ArrowRight' || e.key===' '){ if(current<slides.length-1){ current++; update(); } }
-      if(e.key==='ArrowLeft'){ if(current>0){ current--; update(); } }
+    nextBtn.addEventListener('click', next);
+    prevBtn.addEventListener('click', prev);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowRight' || e.key === ' ') next();
+      if(e.key === 'ArrowLeft') prev();
     });
 
-    // Gestos mobile compatíveis com Safari
-    let startX = 0;
-    document.addEventListener('touchstart', e => {
-      if(e.touches && e.touches.length>0) startX = e.touches[0].clientX;
-    }, {passive:true});
+    // Intro start
+    startBtn.addEventListener('click', ()=> {
+      intro.style.transition = 'opacity 500ms ease, transform 500ms ease';
+      intro.style.opacity = 0;
+      intro.style.transform = 'translateY(-8px) scale(0.995)';
+      setTimeout(()=> {
+        intro.remove();
+        // ensure rendered correctly
+        render();
+      },520);
+    });
 
-    document.addEventListener('touchend', e => {
-      if(e.changedTouches && e.changedTouches.length>0){
-        const endX = e.changedTouches[0].clientX;
-        if (endX - startX > 50 && current > 0) { current--; update(); }
-        if (startX - endX > 50 && current < slides.length - 1) { current++; update(); }
+    // Touch / swipe handling (mobile) + mouse drag (desktop)
+    let startX = 0, currentX = 0, isDragging = false, dragThreshold = 50;
+
+    // Prevent vertical scroll interference; we only handle horizontal gestures on viewport
+    viewport.addEventListener('touchstart', onTouchStart, {passive:true});
+    viewport.addEventListener('touchmove', onTouchMove, {passive:true});
+    viewport.addEventListener('touchend', onTouchEnd, {passive:true});
+
+    // Mouse support for drag on desktop
+    viewport.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+
+    function onTouchStart(e){
+      if(e.touches.length > 1) return;
+      startX = e.touches[0].clientX;
+      currentX = startX;
+      isDragging = true;
+      track.style.transition = 'none'; // disable transition while dragging
+    }
+    function onTouchMove(e){
+      if(!isDragging || e.touches.length > 1) return;
+      currentX = e.touches[0].clientX;
+      const diff = currentX - startX;
+      // show slight follow effect
+      track.style.transform = `translateX(calc(-${current*100}% + ${diff}px))`;
+    }
+    function onTouchEnd(e){
+      if(!isDragging) return;
+      isDragging = false;
+      track.style.transition = ''; // restore transition
+      const diff = currentX - startX;
+      if(diff > dragThreshold && current > 0){
+        prev();
+      } else if(diff < -dragThreshold && current < total-1){
+        next();
+      } else {
+        render(); // snap back
       }
-    }, {passive:true});
+    }
 
-    update();
+    function onMouseDown(e){
+      // only left click
+      if(e.button !== 0) return;
+      startX = e.clientX;
+      currentX = startX;
+      isDragging = true;
+      track.style.transition = 'none';
+      // disable text/image drag while dragging
+      document.body.style.userSelect = 'none';
+    }
+    function onMouseMove(e){
+      if(!isDragging) return;
+      currentX = e.clientX;
+      const diff = currentX - startX;
+      track.style.transform = `translateX(calc(-${current*100}% + ${diff}px))`;
+    }
+    function onMouseUp(e){
+      if(!isDragging) return;
+      isDragging = false;
+      track.style.transition = '';
+      document.body.style.userSelect = '';
+      const diff = currentX - startX;
+      if(diff > dragThreshold && current > 0){
+        prev();
+      } else if(diff < -dragThreshold && current < total-1){
+        next();
+      } else {
+        render();
+      }
+    }
+
+    // Ensure images (pseudo backgrounds) are loaded progressively to avoid white flash
+    // We create Image objects to force caching; this is optional but helps perceived perf.
+    (function preloadBackgrounds(){
+      slides.forEach(s=>{
+        const css = getComputedStyle(s, '::before').getPropertyValue('background-image');
+        // If style attribute used (--bg-url), the computed style might already show it.
+        // fallback: read inline var from style attribute
+        const inline = s.style.getPropertyValue('--bg-url');
+        const bg = inline || css;
+        // extract URL from css text: url("...") or url(...)
+        const match = bg && bg.match(/url\(['"]?(.*?)['"]?\)/);
+        if(match && match[1]){
+          const img = new Image();
+          img.src = match[1];
+        }
+      });
+    })();
+
+    // Initial render
+    render();
+
+    // Make focusable for accessibility
+    [nextBtn, prevBtn, startBtn].forEach(btn => { if(btn) btn.tabIndex = 0 });
+
+    // Small optimization: reduce blur on low-powered devices (optional)
+    (function adjustForPerformance(){
+      try {
+        const nav = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        if(nav && (nav.saveData || (nav.effectiveType && (nav.effectiveType.includes('2g') || nav.effectiveType.includes('3g'))))){
+          // lower blur & reduce transitions
+          document.querySelectorAll('.slide::before'); // noop for safety
+          document.documentElement.style.setProperty('--low-performance','1');
+          // reduce pseudo-element blur (we can't directly access pseudo, but reduce by setting a CSS var if implemented)
+          // fallback: reduce transition durations
+          track.style.transition = 'transform 500ms ease';
+        }
+      } catch(e){}
+    })();
+
+    // Optional: allow clicking anywhere on right/left edges to navigate (helps mobile)
+    viewport.addEventListener('click', (e)=>{
+      const rect = viewport.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if(x < rect.width * 0.2 && current > 0){
+        prev();
+      } else if(x > rect.width * 0.8 && current < total-1){
+        next();
+      }
+    });
+
   </script>
 </body>
 </html>
+
